@@ -1,0 +1,545 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Event Management Api Documentation",
+        "description": "Event Management Api Documentation",
+        "contact": {
+            "name": "Aadhar gaur",
+            "email": "aadhar41@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://events-management-app.test/api/"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Authenticate user and generate JWT token",
+                "operationId": "67d6d0fdd54fba132e1b6f55ca254183",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "example": "mante.alicia@example.net"
+                                    },
+                                    "password": {
+                                        "type": "password",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "object",
+                                            "example": "{'token':'15|qw0rsNAs8gn3wUplKsaUBVZhPLUWi4ooRrtZCFVgb65c2164'}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity. The provided credentials are incorrect.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Terminate current user login session & logout",
+                "operationId": "28d48c13fca984400ac8de99f54ee13a",
+                "responses": {
+                    "200": {
+                        "description": "Logged out successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/events": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get list of events",
+                "description": "Get list of events",
+                "operationId": "index",
+                "parameters": [
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "relationship data i.e. attendees,user",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "the page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "format": "object",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "3"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Aut est minima."
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Ipsam iste hic ut repellat totam est esse ad."
+                                                    },
+                                                    "start_time": {
+                                                        "type": "string",
+                                                        "example": "2023-12-16 13:47:06"
+                                                    },
+                                                    "end_time": {
+                                                        "type": "string",
+                                                        "example": "2024-02-11 21:18:46"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events?include=user,attendees": {
+            "post": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Store/Create event in DB",
+                "description": "Store/Create event in DB",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "start_time",
+                                    "end_time"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Test event Title"
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "2023-12-01 15:00:00"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "2023-12-31 15:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "start_time",
+                                    "end_time"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Test event Title"
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "2023-12-01 15:00:00"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "2023-12-31 15:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "format": "object",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "191"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Aut est minima."
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Ipsam iste hic ut repellat totam est esse ad."
+                                                    },
+                                                    "start_time": {
+                                                        "type": "string",
+                                                        "example": "2023-12-16 13:47:06"
+                                                    },
+                                                    "end_time": {
+                                                        "type": "string",
+                                                        "example": "2024-02-11 21:18:46"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "id": "3",
+                                                "name": "Aut est minima.",
+                                                "description": "Ipsam iste hic ut repellat totam est esse ad.",
+                                                "start_time": "2023-12-16 13:47:06",
+                                                "end_time": "2024-02-11 21:18:46"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{id}": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get Event Detail",
+                "description": "Get Event Detail",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of Event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "format": "object",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "191"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Aut est minima."
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Ipsam iste hic ut repellat totam est esse ad."
+                                                    },
+                                                    "start_time": {
+                                                        "type": "string",
+                                                        "example": "2023-12-16 13:47:06"
+                                                    },
+                                                    "end_time": {
+                                                        "type": "string",
+                                                        "example": "2024-02-11 21:18:46"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "id": "3",
+                                                "name": "Aut est minima.",
+                                                "description": "Ipsam iste hic ut repellat totam est esse ad.",
+                                                "start_time": "2023-12-16 13:47:06",
+                                                "end_time": "2024-02-11 21:18:46"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Update event in DB",
+                "description": "Update event in DB",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of Event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Test event Title"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "format": "object",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "191"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Aut est minima."
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Ipsam iste hic ut repellat totam est esse ad."
+                                                    },
+                                                    "start_time": {
+                                                        "type": "string",
+                                                        "example": "2023-12-16 13:47:06"
+                                                    },
+                                                    "end_time": {
+                                                        "type": "string",
+                                                        "example": "2024-02-11 21:18:46"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "id": "3",
+                                                "name": "Aut est minima.",
+                                                "description": "Ipsam iste hic ut repellat totam est esse ad.",
+                                                "start_time": "2023-12-16 13:47:06",
+                                                "end_time": "2024-02-11 21:18:46"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Delete Event",
+                "description": "Delete Event",
+                "operationId": "destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of Event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}
