@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,7 @@ class AuthController extends Controller
      * @OA\Post(
      *     path="/login",
      *     summary="Authenticate user and generate JWT token",
-     *     tags={"Auth"},
+     *     tags={"Authentication"},
      *      @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(),
@@ -78,7 +79,7 @@ class AuthController extends Controller
      * @OA\Post(
      *     path="/logout",
      *     summary="Terminate current user login session & logout",
-     *     tags={"Auth"},
+     *     tags={"Authentication"},
      *     @OA\Response(response="200", description="Logged out successfully"),
      *     @OA\Response(response="401", description="Unauthenticated."),
      *     @OA\Response(response="404", description="Error: Not Found. The route events could not be found."),
@@ -92,5 +93,56 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged out successfully'
         ]);
+    }
+
+    /**
+     * @OA\Get(
+     *    path="/user",
+     *    operationId="getUserDetails",
+     *    tags={"Authentication"},
+     *    summary="Get an User Details",
+     *    description="Get an User Details",
+     *    security={{"bearerAuth":{}}},
+     *     @OA\Response(response="401", description="Unauthenticated."),
+     *     @OA\Response(response="404", description="Error: Not Found. The route events could not be found."),
+     *     @OA\Response(
+     *          response=200, description="Success",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 format="object",
+     *                 example={
+     *                  "id": "517",
+     *                  "name": "Darius Lubowitz",
+     *                  "email": "mante.alicia@example.net",
+     *                },
+     *                 @OA\Items(
+     *                      @OA\Property(
+     *                         property="id",
+     *                         type="integer",
+     *                         example="191"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="name",
+     *                         type="string",
+     *                         example="Darius Lubowitz"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="email",
+     *                         type="string",
+     *                         example="mante.alicia@example.net"
+     *                      ),
+     *                 )
+     *             )
+     *          )
+     *     )
+     *       )
+     *  )
+     */
+    public function user(Request $request)
+    {
+        return new UserResource($request->user());
     }
 }

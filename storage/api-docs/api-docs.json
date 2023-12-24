@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Event Management Api Documentation",
-        "description": "Event Management Api Documentation",
+        "description": "<b>Api Documentation For</b>, Services responsible for getting the list of all events, get a single event details, creating, updating & deleting an event in database as well as attendee module i.e. getting all attendees for an event, attend an event, get details of an event's attendee & unAttend an Event.",
         "contact": {
             "name": "Aadhar gaur",
             "email": "aadhar41@gmail.com"
@@ -22,7 +22,7 @@
         "/events/{event}/attendees": {
             "get": {
                 "tags": [
-                    "Attendee"
+                    "Attendees"
                 ],
                 "summary": "API (endpoint) for getting all event attendees.",
                 "description": "API (endpoint) for getting all event attendees.",
@@ -98,7 +98,7 @@
         "/events/10/attendees?include=user,attendees": {
             "post": {
                 "tags": [
-                    "Attendee"
+                    "Attendees"
                 ],
                 "summary": "Attend an Event",
                 "description": "Attend an Event",
@@ -178,13 +178,18 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/events/{event}/attendees/{attendee}": {
             "get": {
                 "tags": [
-                    "Attendee"
+                    "Attendees"
                 ],
                 "summary": "Get An Event Attendee Details",
                 "description": "Get An Event Attendee Details",
@@ -272,7 +277,7 @@
             },
             "delete": {
                 "tags": [
-                    "Attendee"
+                    "Attendees"
                 ],
                 "summary": "Unattended an Event",
                 "description": "Unattended an Event",
@@ -323,13 +328,18 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/login": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
                 "summary": "Authenticate user and generate JWT token",
                 "operationId": "67d6d0fdd54fba132e1b6f55ca254183",
@@ -397,7 +407,7 @@
         "/logout": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
                 "summary": "Terminate current user login session & logout",
                 "operationId": "28d48c13fca984400ac8de99f54ee13a",
@@ -410,6 +420,67 @@
                     },
                     "404": {
                         "description": "Error: Not Found. The route events could not be found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get an User Details",
+                "description": "Get an User Details",
+                "operationId": "getUserDetails",
+                "responses": {
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "format": "object",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "191"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Darius Lubowitz"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "mante.alicia@example.net"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "id": "517",
+                                                "name": "Darius Lubowitz",
+                                                "email": "mante.alicia@example.net"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -617,7 +688,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/events/{event}": {
@@ -789,7 +865,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -835,7 +916,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

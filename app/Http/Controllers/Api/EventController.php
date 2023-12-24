@@ -128,6 +128,7 @@ class EventController extends Controller
      *      tags={"Events"},
      *      summary="Store/Create event in DB",
      *      description="Store/Create event in DB",
+     *      security={{"bearerAuth":{}}},
      *      @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -276,9 +277,7 @@ class EventController extends Controller
         return new EventResource($this->loadRelationships($event));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     /**
      * @OA\Put(
      *     path="/events/{event}",
@@ -286,6 +285,7 @@ class EventController extends Controller
      *     tags={"Events"},
      *     summary="Update event in DB",
      *     description="Update event in DB",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(name="event", in="path", description="Id of Event", required=true,
      *         @OA\Schema(type="integer")
      *     ),
@@ -371,6 +371,7 @@ class EventController extends Controller
      *    tags={"Events"},
      *    summary="Delete Event",
      *    description="Delete Event",
+     *    security={{"bearerAuth":{}}},
      *    @OA\Parameter(name="event", in="path", description="Id of Event", required=true,
      *        @OA\Schema(type="integer")
      *    ),
