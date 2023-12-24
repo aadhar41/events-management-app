@@ -19,6 +19,313 @@
         }
     ],
     "paths": {
+        "/events/{event}/attendees": {
+            "get": {
+                "tags": [
+                    "Attendee"
+                ],
+                "summary": "API (endpoint) for getting all event attendees.",
+                "description": "API (endpoint) for getting all event attendees.",
+                "operationId": "getEventAttendees",
+                "parameters": [
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "relationship data i.e. attendees,user",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "the page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "format": "object",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "3"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "string",
+                                                        "example": "1"
+                                                    },
+                                                    "event_id": {
+                                                        "type": "string",
+                                                        "example": "10"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2023-12-16 13:47:06"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-02-11 21:18:46"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/10/attendees?include=user,attendees": {
+            "post": {
+                "tags": [
+                    "Attendee"
+                ],
+                "summary": "Attend an Event",
+                "description": "Attend an Event",
+                "operationId": "attendEvent",
+                "parameters": [
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "relationship data i.e. attendees,user",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "event",
+                        "in": "path",
+                        "description": "Id of Event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "format": "object",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "191"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Aut est minima."
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Ipsam iste hic ut repellat totam est esse ad."
+                                                    },
+                                                    "start_time": {
+                                                        "type": "string",
+                                                        "example": "2023-12-16 13:47:06"
+                                                    },
+                                                    "end_time": {
+                                                        "type": "string",
+                                                        "example": "2024-02-11 21:18:46"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "id": "3",
+                                                "name": "Aut est minima.",
+                                                "description": "Ipsam iste hic ut repellat totam est esse ad.",
+                                                "start_time": "2023-12-16 13:47:06",
+                                                "end_time": "2024-02-11 21:18:46"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{event}/attendees/{attendee}": {
+            "get": {
+                "tags": [
+                    "Attendee"
+                ],
+                "summary": "Get An Event Attendee Details",
+                "description": "Get An Event Attendee Details",
+                "operationId": "getEventAttendee",
+                "parameters": [
+                    {
+                        "name": "event",
+                        "in": "path",
+                        "description": "Id of Event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "attendee",
+                        "in": "path",
+                        "description": "Id of attendee",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "format": "object",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "148"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "America Stanton"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "burnice.cole@example.org"
+                                                    },
+                                                    "email_verified_at": {
+                                                        "type": "string",
+                                                        "example": "2023-12-16 13:47:06"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2023-12-16 13:47:06"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-02-11 21:18:46"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "id": "3",
+                                                "user_id": "Aut est minima.",
+                                                "event_id": "Ipsam iste hic ut repellat totam est esse ad.",
+                                                "created_at": "2023-12-16 13:47:06",
+                                                "updated_at": "2024-02-11 21:18:46"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Attendee"
+                ],
+                "summary": "Unattended an Event",
+                "description": "Unattended an Event",
+                "operationId": "unAttendEvent",
+                "parameters": [
+                    {
+                        "name": "event",
+                        "in": "path",
+                        "description": "Id of Event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "attendee",
+                        "in": "path",
+                        "description": "Id of attendee",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthenticated."
+                    },
+                    "404": {
+                        "description": "Error: Not Found. The route events could not be found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "tags": [
@@ -117,9 +424,9 @@
                 "tags": [
                     "Events"
                 ],
-                "summary": "Get list of events",
-                "description": "Get list of events",
-                "operationId": "index",
+                "summary": "Get list of all events",
+                "description": "Get list of all events",
+                "operationId": "getEventList",
                 "parameters": [
                     {
                         "name": "include",
@@ -195,7 +502,7 @@
                 ],
                 "summary": "Store/Create event in DB",
                 "description": "Store/Create event in DB",
-                "operationId": "store",
+                "operationId": "createEvent",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -313,17 +620,17 @@
                 }
             }
         },
-        "/events/{id}": {
+        "/events/{event}": {
             "get": {
                 "tags": [
                     "Events"
                 ],
-                "summary": "Get Event Detail",
-                "description": "Get Event Detail",
-                "operationId": "show",
+                "summary": "Get an Event Details",
+                "description": "Get an Event Details",
+                "operationId": "getEventDetails",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "event",
                         "in": "path",
                         "description": "Id of Event",
                         "required": true,
@@ -395,10 +702,10 @@
                 ],
                 "summary": "Update event in DB",
                 "description": "Update event in DB",
-                "operationId": "update",
+                "operationId": "updateEvent",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "event",
                         "in": "path",
                         "description": "Id of Event",
                         "required": true,
@@ -490,10 +797,10 @@
                 ],
                 "summary": "Delete Event",
                 "description": "Delete Event",
-                "operationId": "destroy",
+                "operationId": "removeEvent",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "event",
                         "in": "path",
                         "description": "Id of Event",
                         "required": true,

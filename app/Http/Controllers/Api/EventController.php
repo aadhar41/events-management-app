@@ -26,10 +26,10 @@ class EventController extends Controller
     /**
      * @OA\Get(
      *    path="/events",
-     *    operationId="index",
+     *    operationId="getEventList",
      *    tags={"Events"},
-     *    summary="Get list of events",
-     *    description="Get list of events",
+     *    summary="Get list of all events",
+     *    description="Get list of all events",
      *    @OA\Parameter(
      *        name="include",
      *        in="query",
@@ -124,7 +124,7 @@ class EventController extends Controller
     /**
      * @OA\Post(
      *      path="/events?include=user,attendees",
-     *      operationId="store",
+     *      operationId="createEvent",
      *      tags={"Events"},
      *      summary="Store/Create event in DB",
      *      description="Store/Create event in DB",
@@ -213,12 +213,12 @@ class EventController extends Controller
 
     /**
      * @OA\Get(
-     *    path="/events/{id}",
-     *    operationId="show",
+     *    path="/events/{event}",
+     *    operationId="getEventDetails",
      *    tags={"Events"},
-     *    summary="Get Event Detail",
-     *    description="Get Event Detail",
-     *    @OA\Parameter(name="id", in="path", description="Id of Event", required=true,
+     *    summary="Get an Event Details",
+     *    description="Get an Event Details",
+     *    @OA\Parameter(name="event", in="path", description="Id of Event", required=true,
      *        @OA\Schema(type="integer")
      *    ),
      *     @OA\Response(response="401", description="Unauthenticated."),
@@ -281,12 +281,12 @@ class EventController extends Controller
      */
     /**
      * @OA\Put(
-     *     path="/events/{id}",
-     *     operationId="update",
+     *     path="/events/{event}",
+     *     operationId="updateEvent",
      *     tags={"Events"},
      *     summary="Update event in DB",
      *     description="Update event in DB",
-     *     @OA\Parameter(name="id", in="path", description="Id of Event", required=true,
+     *     @OA\Parameter(name="event", in="path", description="Id of Event", required=true,
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
@@ -366,12 +366,12 @@ class EventController extends Controller
 
     /**
      * @OA\Delete(
-     *    path="/events/{id}",
-     *    operationId="destroy",
+     *    path="/events/{event}",
+     *    operationId="removeEvent",
      *    tags={"Events"},
      *    summary="Delete Event",
      *    description="Delete Event",
-     *    @OA\Parameter(name="id", in="path", description="Id of Event", required=true,
+     *    @OA\Parameter(name="event", in="path", description="Id of Event", required=true,
      *        @OA\Schema(type="integer")
      *    ),
      *    @OA\Response(response="401", description="Unauthenticated."),
