@@ -23,7 +23,66 @@ class AttendeeController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *    path="/events/{event}/attendees",
+     *    operationId="getEventAttendees",
+     *    tags={"Attendee"},
+     *    summary="API (endpoint) for getting all event attendees.",
+     *    description="API (endpoint) for getting all event attendees.",
+     *    @OA\Parameter(
+     *        name="include",
+     *        in="query",
+     *        description="relationship data i.e. attendees,user",
+     *        required=false,
+     *        @OA\Schema(type="string")
+     *    ),
+     *    @OA\Parameter(
+     *        name="page",
+     *        in="query",
+     *        description="the page number",
+     *        required=false,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *     @OA\Response(response="404", description="Error: Not Found. The route events could not be found."),
+     *     @OA\Response(
+     *          response=200, description="Success",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 format="object",
+     *                 @OA\Items(
+     *                      @OA\Property(
+     *                         property="id",
+     *                         type="integer",
+     *                         example="3"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="user_id",
+     *                         type="string",
+     *                         example="1"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="event_id",
+     *                         type="string",
+     *                         example="10"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="created_at",
+     *                         type="string",
+     *                         example="2023-12-16 13:47:06"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="updated_at",
+     *                         type="string",
+     *                         example="2024-02-11 21:18:46"
+     *                      ),
+     *                 ),
+     *             )
+     *          )
+     *     )
+     *  )
      */
     public function index(Event $event)
     {
@@ -37,7 +96,70 @@ class AttendeeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *      path="/events/10/attendees?include=user,attendees",
+     *      operationId="attendEvent",
+     *      tags={"Attendee"},
+     *      summary="Attend an Event",
+     *      description="Attend an Event",
+     *    @OA\Parameter(
+     *        name="include",
+     *        in="query",
+     *        description="relationship data i.e. attendees,user",
+     *        required=false,
+     *        @OA\Schema(type="string")
+     *    ),
+     *    @OA\Parameter(name="event", in="path", description="Id of Event", required=true,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *     @OA\Response(response="401", description="Unauthenticated."),
+     *     @OA\Response(response="404", description="Error: Not Found. The route events could not be found."),
+     *    @OA\Response(
+     *          response=201, description="Success",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 format="object",
+     *                 example={
+     *                  "id": "3",
+     *                  "name": "Aut est minima.",
+     *                  "description": "Ipsam iste hic ut repellat totam est esse ad.",
+     *                  "start_time": "2023-12-16 13:47:06",
+     *                  "end_time": "2024-02-11 21:18:46",
+     *                },
+     *                 @OA\Items(
+     *                      @OA\Property(
+     *                         property="id",
+     *                         type="integer",
+     *                         example="191"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="name",
+     *                         type="string",
+     *                         example="Aut est minima."
+     *                      ),
+     *                      @OA\Property(
+     *                         property="description",
+     *                         type="string",
+     *                         example="Ipsam iste hic ut repellat totam est esse ad."
+     *                      ),
+     *                      @OA\Property(
+     *                         property="start_time",
+     *                         type="string",
+     *                         example="2023-12-16 13:47:06"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="end_time",
+     *                         type="string",
+     *                         example="2024-02-11 21:18:46"
+     *                      ),
+     *                 )
+     *             )
+     *          )
+     *     )
+     *  )
      */
     public function store(Request $request, Event $event)
     {
@@ -51,7 +173,72 @@ class AttendeeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *    path="/events/{event}/attendees/{attendee}",
+     *    operationId="getEventAttendee",
+     *    tags={"Attendee"},
+     *    summary="Get An Event Attendee Details",
+     *    description="Get An Event Attendee Details",
+     *    @OA\Parameter(name="event", in="path", description="Id of Event", required=true,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Parameter(name="attendee", in="path", description="Id of attendee", required=true,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *     @OA\Response(response="401", description="Unauthenticated."),
+     *     @OA\Response(response="404", description="Error: Not Found. The route events could not be found."),
+     *     @OA\Response(
+     *          response=200, description="Success",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 format="object",
+     *                 example={
+     *                  "id": "3",
+     *                  "user_id": "Aut est minima.",
+     *                  "event_id": "Ipsam iste hic ut repellat totam est esse ad.",
+     *                  "created_at": "2023-12-16 13:47:06",
+     *                  "updated_at": "2024-02-11 21:18:46",
+     *                },
+     *                 @OA\Items(
+     *                      @OA\Property(
+     *                         property="id",
+     *                         type="integer",
+     *                         example="148"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="name",
+     *                         type="string",
+     *                         example="America Stanton"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="email",
+     *                         type="string",
+     *                         example="burnice.cole@example.org"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="email_verified_at",
+     *                         type="string",
+     *                         example="2023-12-16 13:47:06"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="created_at",
+     *                         type="string",
+     *                         example="2023-12-16 13:47:06"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="updated_at",
+     *                         type="string",
+     *                         example="2024-02-11 21:18:46"
+     *                      ),
+     *                 )
+     *             )
+     *          )
+     *     )
+     *       )
+     *  )
      */
     public function show(Event $event, Attendee $attendee)
     {
@@ -61,7 +248,30 @@ class AttendeeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *    path="/events/{event}/attendees/{attendee}",
+     *    operationId="unAttendEvent",
+     *    tags={"Attendee"},
+     *    summary="Unattended an Event",
+     *    description="Unattended an Event",
+     *    @OA\Parameter(name="event", in="path", description="Id of Event", required=true,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Parameter(name="attendee", in="path", description="Id of attendee", required=true,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Response(response="401", description="Unauthenticated."),
+     *    @OA\Response(response="404", description="Error: Not Found. The route events could not be found."),
+     *    @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *          @OA\Property(property="status_code", type="integer", example="200"),
+     *          @OA\Property(property="data",type="object")
+     *         ),
+     *    )
+     *      )
+     *  )
      */
     public function destroy(Event $event, Attendee $attendee)
     {
